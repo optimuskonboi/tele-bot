@@ -74,7 +74,7 @@ def find_info_person(name, data):
 
 schedule.every().day.at("22:00").do(send_daily_alert)
 
-# current_index=13
+current_index=13
 send_daily_alert()
 while True:
     schedule.run_pending()
