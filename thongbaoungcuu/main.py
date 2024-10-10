@@ -1,10 +1,10 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
-import schedule
 import time
 import requests
 import json
+import pytz
 
 with open('config.json') as config_file:
     config = json.load(config_file)
@@ -72,10 +72,16 @@ def find_info_person(name, data):
             return data[i][5], data[i][6]
     return None, None
 
-schedule.every().day.at("22:00").do(send_daily_alert)
+vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
 
+# send the first message
 current_index=13
 send_daily_alert()
+
 while True:
-    schedule.run_pending()
-    time.sleep(60)
+    now_vietnam = datetime.datetime.now(vietnam_tz)
+    if now_vietnam.hour == 21 and now_vietnam.minute in range(0, 5):
+        send_daily_alert()
+        time.sleep(300)
+    else:
+        time.sleep(60)
