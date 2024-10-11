@@ -54,7 +54,7 @@ def send_daily_alert():
                     print(message)
                     send_telegram_message(message=message)
                     current_index += 1
-                    return
+                    return True
                 else:
                     current_index += 1
                     if current_index >= total_rows:
@@ -65,6 +65,7 @@ def send_daily_alert():
             send_telegram_message(message="Có lỗi xảy ra khi lấy thông tin người ứng cứu sự cố")
             attempts += 1
             time.sleep(60)
+    return False
 
 def find_info_person(name, data):
     for i in range(1, len(data)):
@@ -75,13 +76,14 @@ def find_info_person(name, data):
 vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
 
 # send the first message
-current_index=13
+current_index=14
 send_daily_alert()
 
 while True:
     now_vietnam = datetime.datetime.now(vietnam_tz)
-    if now_vietnam.hour == 21 and now_vietnam.minute in range(0, 5):
-        send_daily_alert()
-        time.sleep(300)
+    print(now_vietnam.hour, now_vietnam.minute)
+    if now_vietnam.hour == 22 and send_daily_alert():
+        print("Sleep 1 hour")
+        time.sleep(60*60)
     else:
         time.sleep(60)
