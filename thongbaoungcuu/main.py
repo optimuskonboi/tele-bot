@@ -82,7 +82,7 @@ send_daily_alert()
 while True:
     now_vietnam = datetime.datetime.now(vietnam_tz)
     print(now_vietnam.hour, now_vietnam.minute)
-    if now_vietnam.hour == 22 and send_daily_alert():
+    if now_vietnam.hour == 21 and send_daily_alert():
         print("Sleep 1 hour")
         time.sleep(60*60)
     else:
